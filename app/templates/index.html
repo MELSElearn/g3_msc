@@ -220,17 +220,15 @@
 						clearTimeout(_timer);
 					}
 					_timer = setTimeout(function() {
-						let word = words[index]
-					
-						a.currentTime = aobj[word][0]
-						// 选对才播放下一个 && index > 0
-						if (flag ) {
-							// return;
+						// 选对才播放下一个 
+						if (flag) {
 							index++;
 						}
+						let word = words[index]
+						a.currentTime = aobj[word][0]
 						a.play();
 						answer = words[index]
-						console.log('answer=', answer);
+						console.log('answer=', answer,index,word);
 						flag = 0;
 						
 						let dur =Math.ceil((aobj[word][1] - aobj[word][0]) *1000) 
@@ -265,15 +263,12 @@
 					answer_timer = setTimeout(function() {
 							if (answer != '') {
 								var text_el = document.getElementsByClassName(answer+'-text')[0]
-								console.log(text_el.children[0])
 								// 显示答案
-								console.log(document.getElementsByClassName(answer+'-text')[0])
 								if (!document.getElementsByClassName(answer+'-text')[0].getAttribute('visible')) {
 									document.getElementsByClassName(answer+'-text')[0].setAttribute('visible', "true")
 								}
 								if (u_answer === answer) {
 									//更改符号
-									
 									text_el.children[0].setAttribute('src', "#correct")
 									_check.children[0].setAttribute('src', "#correct")
 									_check.setAttribute("visible", true)
@@ -282,7 +277,7 @@
 									setTimeout(function() {
 										sound.pause()
 										// todo 改成特效？
-										if (index == words.length) {
+										if (index+1 == words.length) {
 											alert('You have completed this course！');
 											document.getElementsByClassName('btn')[0].innerHTML="Learn again!",
 											document.getElementById('mainscene').setAttribute('visible', 'false')
@@ -292,14 +287,12 @@
 											$('.container').show()
 										}
 									}, 1500)
-									
 									console.log('正确')
-									return;
 									// 取消跟踪
 									_this.children[0].classList.remove("link")
-									console.log(_this.children[0].classList)
 									flag = 1;
-									document.getElementById('res-count').setAttribute("value", "Result(" + index + "/5)")
+									let count = parseInt(index+1)
+									document.getElementById('res-count').setAttribute("value", "Result(" + count + "/5)")
 									// 标记：答对之后，开始下一题之前，不要再播放错误音频
 									answer = ''
 								} else {
@@ -315,7 +308,6 @@
 									setTimeout(function() {
 										sound.pause()
 										sound.currentTime = aobj[word][0]
-										console.log(sound.currentTime)
 										sound.play();
 										setTimeout(function() {
 											sound.pause()
@@ -341,7 +333,6 @@
 					let obj_name = _this.className
 						document.getElementsByClassName(obj_name+'_select')[0].setAttribute('visible', "false")
 					// // 有镜头追踪时候才隐藏
-					console.log()
 					if (_this.children[0].classList.contains('link')) {
 						document.getElementsByClassName(obj_name+'_check')[0].setAttribute('visible', "false")
 					}
